@@ -4,16 +4,17 @@ module.exports = function (grunt) {
 		// Set Grunt to watch our files and run tasks on them
 		watch: {
 			sass: {
-				files: '_sass/*.scss',
+				files: '_sass/*.scss', // The files to watch. Use a wildcard selector to watch multiple files
 				tasks: ['sass', 'bsReload:css'],
 			},
+			// As above
 			css: {
-				files: 'css/*.css',
+				files: 'css/*.css',  
 				tasks: ['postcss'],
 			},
 		},
 
-		// Create a OS notification to tell us when tasks have been completed or if there are errors
+		// Create OS notification to tell us when tasks have been completed or if there are errors
 		notify_hooks: {
 			options: {
 				enabled: true,
@@ -22,14 +23,14 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// Run Sass on the listed files
+		// Compile the listed files and output
 		sass: {
 			options: {
-				sourceMap: false
+				sourceMap: false // No source map as postcss can do this. 
 			},
 			dist: {
 				files: {
-					'css/main.css': '_sass/custom/*.scss'
+					'css/main.css': '_sass/custom/*.scss' // Read right to left - compile *.scss and output to main.css  
 				}
 			}
 		},
@@ -37,10 +38,12 @@ module.exports = function (grunt) {
 		// Use Postcss to create sourcemaps for Sass, autoprefixer and cssnano
 		postcss: {
 			options: {
+				// Create sourcemaps and output to defined dir
 				map: {
 					inline: false,
 					annotation: 'css/maps/'
 				},
+				// Run postcss magic - in this case autoprefixer and css nano
 				processors: [
 					require('autoprefixer')({
 						browsers: 'last 2 versions'
@@ -48,6 +51,7 @@ module.exports = function (grunt) {
 					require('cssnano')()
 				]
 			},
+			// Output result to here
 			dist: {
 				src: 'css/main.css'
 			}
@@ -56,6 +60,7 @@ module.exports = function (grunt) {
 		// Autorefresh browser - http://localhost:3000/yourpage.html
 		browserSync: {
 			default_options: {
+				// look for changes to here
 				bsFiles: {
 					src: "css/*.css"
 				},
@@ -73,7 +78,6 @@ module.exports = function (grunt) {
 
 	});
 
-
 	/* Load tasks */
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -82,8 +86,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-notify');
 	grunt.loadNpmTasks('grunt-browser-sync');
 
-
-	/* Run above tasks */
+	/* Run above tasks as selected */
 
 	grunt.registerTask('default', ['watch']);
 	//grunt.registerTask('default', ['browserSync', 'watch']);
